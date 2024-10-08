@@ -5,6 +5,7 @@
 ## Features
 
 - **Custom Menu Integration:** Adds an "Export Tools" menu to your Google Sheet, with the option "Export for AI (JSON)".
+- **Cell-Level Data Mapping:** Exports each cell's data and formula along with its exact cell address (e.g., "A1"), allowing AI models to understand the precise location of each piece of content.
 - **AI-Optimized Export:** Converts all spreadsheet data and formulas into a structured JSON format for optimal AI interaction.
 - **Detailed Metadata:** Includes spreadsheet metadata such as sheet names, row/column counts, total formulas, and more.
 - **Downloadable Link:** After the export is complete, the script generates a downloadable link for the JSON file.
@@ -13,7 +14,7 @@
 
 1. **Create the Script:**
     - In your Google Sheet, click on `Extensions > Apps Script`.
-    - Replace any existing code with the contents of `exportForAI.gs`.
+    - Replace any existing code with the contents of `exportForAI.gs` from this repository.
     - Save the project with a meaningful name (e.g., "Export for AI").
 
 2. **Refresh the Google Sheet:**
@@ -33,6 +34,7 @@ Once you've exported the JSON file, you can upload it to AI models like **ChatGP
 - Visualizing data or performing advanced analytics.
 
 ### Example Queries to Ask AI Models:
+
 - "Can you explain the formulas in this spreadsheet?"
 - "What insights can you draw from the data?"
 - "Are there any improvements you recommend for the formulas?"
@@ -64,14 +66,56 @@ Once you've exported the JSON file, you can upload it to AI models like **ChatGP
         "num_formulas": 20,
         "protected": "Visible"
       },
-      "data": [
-        [ "A1", "B1", "C1" ],
-        [ "A2", "B2", "C2" ]
-      ],
-      "formulas": [
-        [ "", "=B1+C1", "" ]
+      "cells": [
+        {
+          "cell_address": "A1",
+          "value": "Name",
+          "formula": null
+        },
+        {
+          "cell_address": "B1",
+          "value": "Age",
+          "formula": null
+        },
+        {
+          "cell_address": "C1",
+          "value": "Salary",
+          "formula": null
+        },
+        {
+          "cell_address": "A2",
+          "value": "John Doe",
+          "formula": null
+        },
+        {
+          "cell_address": "B2",
+          "value": 30,
+          "formula": null
+        },
+        {
+          "cell_address": "C2",
+          "value": 50000,
+          "formula": "=B2*1000"
+        },
+        {
+          "cell_address": "A3",
+          "value": "Jane Smith",
+          "formula": null
+        },
+        {
+          "cell_address": "B3",
+          "value": 25,
+          "formula": null
+        },
+        {
+          "cell_address": "C3",
+          "value": 45000,
+          "formula": "=B3*1800"
+        }
+        // ... more cells
       ]
-    }
+    },
+    // ... more sheets if applicable
   ]
 }
 ```
