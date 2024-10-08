@@ -57,6 +57,25 @@ function saveAsJson() {
     spreadsheetData.spreadsheet_metadata.total_cells += numRows * numColumns;
     spreadsheetData.spreadsheet_metadata.total_formulas += formulaCount;
 
+    // Construct the cells array
+    let cells = [];
+    for (let rowIndex = 0; rowIndex < numRows; rowIndex++) {
+      for (let colIndex = 0; colIndex < numColumns; colIndex++) {
+        let row = rowIndex + 1;
+        let col = colIndex + 1;
+        let cell = sheet.getRange(row, col);
+        let cellAddress = cell.getA1Notation();
+        let value = values[rowIndex][colIndex];
+        let formula = formulas[rowIndex][colIndex];
+
+        cells.push({
+          cell_address: cellAddress,
+          value: value,
+          formula: formula ? formula : null
+        });
+      }
+    }
+
     // Construct sheet-specific data and metadata
     let sheetData = {
       sheet_name: sheetName,
@@ -69,8 +88,7 @@ function saveAsJson() {
         num_formulas: formulaCount,
         protected: sheet.isSheetHidden() ? "Hidden" : "Visible"
       },
-      data: values,
-      formulas: formulas
+      cells: cells
     };
 
     spreadsheetData.sheets.push(sheetData);
