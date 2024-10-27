@@ -14,11 +14,11 @@
 
 1. **Create the Script:**
     - In your Google Sheet, click on `Extensions > Apps Script`.
-    - Replace any existing code with the contents of `exportForAI.gs` from this repository.
+    - Backup and then replace any existing code with the contents of `exportForAI.gs` from this repository.
     - Save the project with a meaningful name (e.g., "Export for AI").
 
 2. **Refresh the Google Sheet:**
-    - After saving the script, close the Apps Script editor and refresh your Google Sheet.
+    - After saving the script, close the Apps Script editor and hard refresh your Google Sheet.
     - You will see a new menu called "Export Tools" with the "Export for AI (JSON)" option.
 
 3. **Exporting Data:**
