@@ -27,11 +27,11 @@ For new Google Sheets or sheets without existing Apps Script code:
     
     function exportForAI() {
       const result = AIExport.exportSpreadsheetAsJson();
-      const html = HtmlService.createHtmlOutput(
-        `<p>Download ready: <a href="${result.dataUrl}" download="${result.filename}">Download ${result.filename}</a></p>
-         <p>File size: ${Math.round(result.size/1024)}KB</p>`
-      ).setWidth(400).setHeight(120);
-      SpreadsheetApp.getUi().showModalDialog(html, 'Export Complete');
+      SpreadsheetApp.getUi().alert(
+        'Export Complete', 
+        `Download ready! File: ${result.filename} (${Math.round(result.size/1024)}KB)\n\nCopy this link to download:\n${result.dataUrl}`, 
+        SpreadsheetApp.getUi().ButtonSet.OK
+      );
     }
     ```
     - Save the project with a meaningful name (e.g., "Export for AI").
@@ -55,11 +55,11 @@ If your Google Sheet already has Apps Script code:
     ```javascript
     function exportForAI() {
       const result = AIExport.exportSpreadsheetAsJson();
-      const html = HtmlService.createHtmlOutput(
-        `<p>Download ready: <a href="${result.dataUrl}" download="${result.filename}">Download ${result.filename}</a></p>
-         <p>File size: ${Math.round(result.size/1024)}KB</p>`
-      ).setWidth(400).setHeight(120);
-      SpreadsheetApp.getUi().showModalDialog(html, 'Export Complete');
+      SpreadsheetApp.getUi().alert(
+        'Export Complete', 
+        `Download ready! File: ${result.filename} (${Math.round(result.size/1024)}KB)\n\nCopy this link to download:\n${result.dataUrl}`, 
+        SpreadsheetApp.getUi().ButtonSet.OK
+      );
     }
     ```
 
