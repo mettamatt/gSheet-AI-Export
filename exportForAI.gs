@@ -58,14 +58,14 @@ const AIExport = {
       }
     });
 
-    const blob   = Utilities.newBlob(JSON.stringify(exportData, null, 2),
-                                     MimeType.JSON,
-                                     `${ss.getName()}_data.json`);
-    const file   = DriveApp.getFileById(ss.getId()).getParents().next().createFile(blob); // same folder
-    const html   = HtmlService
-                     .createHtmlOutput(`<p>Your export is ready: <a href="${file.getUrl()}" target="_blank">Download JSON</a></p>`)
-                     .setWidth(320)
-                     .setHeight(80);
+    const jsonString = JSON.stringify(exportData, null, 2);
+    const base64Data = Utilities.base64Encode(jsonString);
+    const filename   = `${ss.getName()}_data.json`;
+    const dataUrl    = `data:application/json;base64,${base64Data}`;
+    const html       = HtmlService
+                         .createHtmlOutput(`<p>Your export is ready: <a href="${dataUrl}" download="${filename}">Download JSON</a></p>`)
+                         .setWidth(320)
+                         .setHeight(80);
 
     SpreadsheetApp.getUi().showModalDialog(html, 'Export complete');
   },
