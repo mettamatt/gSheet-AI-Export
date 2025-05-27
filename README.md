@@ -8,7 +8,7 @@
 - **Cell-Level Data Mapping:** Exports each cell's data and formula along with its exact cell address (e.g., "A1"), allowing AI models to understand the precise location of each piece of content.
 - **AI-Optimized Export:** Converts all spreadsheet data and formulas into a structured JSON format for optimal AI interaction.
 - **Detailed Metadata:** Includes spreadsheet metadata such as sheet names, row/column counts, total formulas, and more.
-- **Google Drive Integration:** After export, the script saves the JSON file directly to Google Drive in the same folder as your spreadsheet.
+- **Direct Download:** Creates downloadable JSON files without requiring Google Drive permissions.
 
 ## Installation Options
 
@@ -33,7 +33,7 @@ For new Google Sheets or sheets without existing Apps Script code:
 
 3. **Exporting Data:**
     - Once the custom menu appears, click on `Export Tools > Export for AI (JSON)` to export the spreadsheet data and formulas as a JSON file.
-    - A dialog will appear with a link to the JSON file saved in your Google Drive.
+    - The script will generate a downloadable JSON file for immediate download.
 
 ### Integration with Existing Apps Script
 If your Google Sheet already has Apps Script code:
@@ -41,13 +41,26 @@ If your Google Sheet already has Apps Script code:
 1. **Copy the Code:**
     - Copy the contents of `exportForAI.gs` from this repository into your existing Apps Script project.
 
-2. **Add Menu Item:**
-    - Add this line to your existing `onOpen()` function's menu array:
+2. **Create a Wrapper Function:**
+    - Since the export function returns download data, create a wrapper to handle the UI:
     ```javascript
-    { name: 'Export for AI (JSON)', functionName: 'AIExport.exportSpreadsheetAsJson' }
+    function exportForAI() {
+      const result = AIExport.exportSpreadsheetAsJson();
+      const html = HtmlService.createHtmlOutput(
+        `<p>Download ready: <a href="${result.dataUrl}" download="${result.filename}">Download ${result.filename}</a></p>
+         <p>File size: ${Math.round(result.size/1024)}KB</p>`
+      ).setWidth(400).setHeight(120);
+      SpreadsheetApp.getUi().showModalDialog(html, 'Export Complete');
+    }
     ```
 
-3. **Complete Example:**
+3. **Add Menu Item:**
+    - Add this line to your existing `onOpen()` function's menu array:
+    ```javascript
+    { name: 'Export for AI (JSON)', functionName: 'exportForAI' }
+    ```
+
+4. **Complete Example:**
     ```javascript
     function onOpen() {
       const ss = SpreadsheetApp.getActiveSpreadsheet();
@@ -55,7 +68,7 @@ If your Google Sheet already has Apps Script code:
         // Your existing menu items
         { name: 'My Function', functionName: 'myFunction' },
         null, // separator
-        { name: 'Export for AI (JSON)', functionName: 'AIExport.exportSpreadsheetAsJson' }
+        { name: 'Export for AI (JSON)', functionName: 'exportForAI' }
       ];
       ss.addMenu('My Menu', menuItems);
     }
