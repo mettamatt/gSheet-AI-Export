@@ -178,7 +178,15 @@ const AIExport = {
    * `raw` flag skips column-letter caching (slightly faster for lookup keys).
    */
   cellA1: function(row, col, raw) {
-    return (raw ? this.columnToLetter(col) : (this.columnLetterCache[col] ||= this.columnToLetter(col))) + row;
+    if (raw) {
+      return this.columnToLetter(col) + row;        // no caching for lookup keys
+    }
+
+    // cache the column letter the classic way
+    if (!this.columnLetterCache[col]) {
+      this.columnLetterCache[col] = this.columnToLetter(col);
+    }
+    return this.columnLetterCache[col] + row;
   },
 
   /**
