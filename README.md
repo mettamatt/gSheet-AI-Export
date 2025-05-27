@@ -18,6 +18,13 @@ For new Google Sheets or sheets without existing Apps Script code:
 1. **Create the Script:**
     - In your Google Sheet, click on `Extensions > Apps Script`.
     - Replace any existing code with the contents of `exportForAI.gs` from this repository.
+    - Add this simple `onOpen()` function to create the menu:
+    ```javascript
+    function onOpen() {
+      SpreadsheetApp.getActiveSpreadsheet()
+        .addMenu('Export Tools', [{ name: 'Export for AI (JSON)', functionName: 'AIExport.exportSpreadsheetAsJson' }]);
+    }
+    ```
     - Save the project with a meaningful name (e.g., "Export for AI").
 
 2. **Refresh the Google Sheet:**
@@ -29,9 +36,32 @@ For new Google Sheets or sheets without existing Apps Script code:
     - A dialog will appear with a link to the JSON file saved in your Google Drive.
 
 ### Integration with Existing Apps Script
-If your Google Sheet already has Apps Script code, use the namespaced version to avoid conflicts:
+If your Google Sheet already has Apps Script code:
 
-📖 **See the [Integration Guide](INTEGRATION.md)** for detailed instructions on adding this functionality to existing Apps Script projects.
+1. **Copy the Code:**
+    - Copy the contents of `exportForAI.gs` from this repository into your existing Apps Script project.
+
+2. **Add Menu Item:**
+    - Add this line to your existing `onOpen()` function's menu array:
+    ```javascript
+    { name: 'Export for AI (JSON)', functionName: 'AIExport.exportSpreadsheetAsJson' }
+    ```
+
+3. **Complete Example:**
+    ```javascript
+    function onOpen() {
+      const ss = SpreadsheetApp.getActiveSpreadsheet();
+      const menuItems = [
+        // Your existing menu items
+        { name: 'My Function', functionName: 'myFunction' },
+        null, // separator
+        { name: 'Export for AI (JSON)', functionName: 'AIExport.exportSpreadsheetAsJson' }
+      ];
+      ss.addMenu('My Menu', menuItems);
+    }
+    ```
+
+The `AIExport` namespace prevents any conflicts with your existing function names.
 
 ## Usage with AI Models (ChatGPT and Claude)
 
