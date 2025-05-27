@@ -18,11 +18,20 @@ For new Google Sheets or sheets without existing Apps Script code:
 1. **Create the Script:**
     - In your Google Sheet, click on `Extensions > Apps Script`.
     - Replace any existing code with the contents of `exportForAI.gs` from this repository.
-    - Add this simple `onOpen()` function to create the menu:
+    - Add these functions to create the menu and handle the UI:
     ```javascript
     function onOpen() {
       SpreadsheetApp.getActiveSpreadsheet()
-        .addMenu('Export Tools', [{ name: 'Export for AI (JSON)', functionName: 'AIExport.exportSpreadsheetAsJson' }]);
+        .addMenu('Export Tools', [{ name: 'Export for AI (JSON)', functionName: 'exportForAI' }]);
+    }
+    
+    function exportForAI() {
+      const result = AIExport.exportSpreadsheetAsJson();
+      const html = HtmlService.createHtmlOutput(
+        `<p>Download ready: <a href="${result.dataUrl}" download="${result.filename}">Download ${result.filename}</a></p>
+         <p>File size: ${Math.round(result.size/1024)}KB</p>`
+      ).setWidth(400).setHeight(120);
+      SpreadsheetApp.getUi().showModalDialog(html, 'Export Complete');
     }
     ```
     - Save the project with a meaningful name (e.g., "Export for AI").
