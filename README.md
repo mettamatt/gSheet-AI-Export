@@ -10,11 +10,14 @@
 - **Detailed Metadata:** Includes spreadsheet metadata such as sheet names, row/column counts, total formulas, and more.
 - **Google Drive Integration:** After export, the script saves the JSON file directly to Google Drive in the same folder as your spreadsheet.
 
-## Installation
+## Installation Options
+
+### New Installation
+For new Google Sheets or sheets without existing Apps Script code:
 
 1. **Create the Script:**
     - In your Google Sheet, click on `Extensions > Apps Script`.
-    - Backup and then replace any existing code with the contents of `exportForAI.gs` from this repository.
+    - Replace any existing code with the contents of `exportForAI.gs` from this repository.
     - Save the project with a meaningful name (e.g., "Export for AI").
 
 2. **Refresh the Google Sheet:**
@@ -24,6 +27,11 @@
 3. **Exporting Data:**
     - Once the custom menu appears, click on `Export Tools > Export for AI (JSON)` to export the spreadsheet data and formulas as a JSON file.
     - A dialog will appear with a link to the JSON file saved in your Google Drive.
+
+### Integration with Existing Apps Script
+If your Google Sheet already has Apps Script code, use the namespaced version to avoid conflicts:
+
+📖 **See the [Integration Guide](INTEGRATION.md)** for detailed instructions on adding this functionality to existing Apps Script projects.
 
 ## Usage with AI Models (ChatGPT and Claude)
 
