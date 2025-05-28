@@ -8,7 +8,7 @@
 - **Cell-Level Data Mapping:** Exports each cell's data and formula along with its exact cell address (e.g., "A1"), allowing AI models to understand the precise location of each piece of content.
 - **AI-Optimized Export:** Converts all spreadsheet data and formulas into a structured JSON format for optimal AI interaction.
 - **Detailed Metadata:** Includes spreadsheet metadata such as sheet names, row/column counts, total formulas, and more.
-- **Direct Download:** Creates downloadable JSON files and displays download links automatically.
+- **Direct Download:** Creates downloadable JSON files using data URLs without requiring Google Drive permissions.
 
 ## Installation Options
 
@@ -26,7 +26,13 @@ For new Google Sheets or sheets without existing Apps Script code:
     }
     
     function exportForAI() {
-      AIExport.exportSpreadsheetAsJson();
+      const result = AIExport.exportSpreadsheetAsJson();
+      const html = HtmlService
+        .createHtmlOutput(`<p>Your export is ready: <a href="${result.dataUrl}" download="${result.filename}">Download JSON</a></p>`)
+        .setWidth(320)
+        .setHeight(80);
+      
+      SpreadsheetApp.getUi().showModalDialog(html, 'Export complete');
     }
     ```
     - Save the project with a meaningful name (e.g., "Export for AI").
@@ -37,7 +43,7 @@ For new Google Sheets or sheets without existing Apps Script code:
 
 3. **Exporting Data:**
     - Once the custom menu appears, click on `Export Tools > Export for AI (JSON)` to export the spreadsheet data and formulas as a JSON file.
-    - The script will create a JSON file in Google Drive and display a modal dialog with a download link.
+    - The script will display a modal dialog with a clickable download link for the JSON file.
 
 ### Integration with Existing Apps Script
 If your Google Sheet already has Apps Script code:
@@ -46,10 +52,16 @@ If your Google Sheet already has Apps Script code:
     - Copy the contents of `exportForAI.gs` from this repository into your existing Apps Script project.
 
 2. **Create a Wrapper Function:**
-    - Create a simple wrapper function to call the export:
+    - Create a wrapper function to handle the export and display a clickable download link:
     ```javascript
     function exportForAI() {
-      AIExport.exportSpreadsheetAsJson();
+      const result = AIExport.exportSpreadsheetAsJson();
+      const html = HtmlService
+        .createHtmlOutput(`<p>Your export is ready: <a href="${result.dataUrl}" download="${result.filename}">Download JSON</a></p>`)
+        .setWidth(320)
+        .setHeight(80);
+      
+      SpreadsheetApp.getUi().showModalDialog(html, 'Export complete');
     }
     ```
 
