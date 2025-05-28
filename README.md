@@ -8,7 +8,7 @@
 - **Cell-Level Data Mapping:** Exports each cell's data and formula along with its exact cell address (e.g., "A1"), allowing AI models to understand the precise location of each piece of content.
 - **AI-Optimized Export:** Converts all spreadsheet data and formulas into a structured JSON format for optimal AI interaction.
 - **Detailed Metadata:** Includes spreadsheet metadata such as sheet names, row/column counts, total formulas, and more.
-- **Direct Download:** Creates downloadable JSON files without requiring Google Drive permissions.
+- **Direct Download:** Creates downloadable JSON files and displays download links automatically.
 
 ## Installation Options
 
@@ -18,7 +18,7 @@ For new Google Sheets or sheets without existing Apps Script code:
 1. **Create the Script:**
     - In your Google Sheet, click on `Extensions > Apps Script`.
     - Replace any existing code with the contents of `exportForAI.gs` from this repository.
-    - Add these functions to create the menu and handle the UI:
+    - Add these functions to create the menu:
     ```javascript
     function onOpen() {
       SpreadsheetApp.getActiveSpreadsheet()
@@ -26,12 +26,7 @@ For new Google Sheets or sheets without existing Apps Script code:
     }
     
     function exportForAI() {
-      const result = AIExport.exportSpreadsheetAsJson();
-      SpreadsheetApp.getUi().alert(
-        'Export Complete', 
-        `Download ready! File: ${result.filename} (${Math.round(result.size/1024)}KB)\n\nCopy this link to download:\n${result.dataUrl}`, 
-        SpreadsheetApp.getUi().ButtonSet.OK
-      );
+      AIExport.exportSpreadsheetAsJson();
     }
     ```
     - Save the project with a meaningful name (e.g., "Export for AI").
@@ -42,7 +37,7 @@ For new Google Sheets or sheets without existing Apps Script code:
 
 3. **Exporting Data:**
     - Once the custom menu appears, click on `Export Tools > Export for AI (JSON)` to export the spreadsheet data and formulas as a JSON file.
-    - The script will generate a downloadable JSON file for immediate download.
+    - The script will create a JSON file in Google Drive and display a modal dialog with a download link.
 
 ### Integration with Existing Apps Script
 If your Google Sheet already has Apps Script code:
@@ -51,15 +46,10 @@ If your Google Sheet already has Apps Script code:
     - Copy the contents of `exportForAI.gs` from this repository into your existing Apps Script project.
 
 2. **Create a Wrapper Function:**
-    - Since the export function returns download data, create a wrapper to handle the UI:
+    - Create a simple wrapper function to call the export:
     ```javascript
     function exportForAI() {
-      const result = AIExport.exportSpreadsheetAsJson();
-      SpreadsheetApp.getUi().alert(
-        'Export Complete', 
-        `Download ready! File: ${result.filename} (${Math.round(result.size/1024)}KB)\n\nCopy this link to download:\n${result.dataUrl}`, 
-        SpreadsheetApp.getUi().ButtonSet.OK
-      );
+      AIExport.exportSpreadsheetAsJson();
     }
     ```
 
