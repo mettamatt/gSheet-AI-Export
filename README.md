@@ -27,12 +27,11 @@ For new Google Sheets or sheets without existing Apps Script code:
     
     function exportForAI() {
       const result = AIExport.exportSpreadsheetAsJson();
-      const html = HtmlService
-        .createHtmlOutput(`<p>Your export is ready: <a href="${result.dataUrl}" download="${result.filename}">Download JSON</a></p>`)
-        .setWidth(320)
-        .setHeight(80);
-      
-      SpreadsheetApp.getUi().showModalDialog(html, 'Export complete');
+      SpreadsheetApp.getUi().alert(
+        'Export Complete', 
+        `Download ready! File: ${result.filename} (${Math.round(result.size/1024)}KB)\n\nCopy this link to download:\n${result.dataUrl}`, 
+        SpreadsheetApp.getUi().ButtonSet.OK
+      );
     }
     ```
     - Save the project with a meaningful name (e.g., "Export for AI").
@@ -43,7 +42,7 @@ For new Google Sheets or sheets without existing Apps Script code:
 
 3. **Exporting Data:**
     - Once the custom menu appears, click on `Export Tools > Export for AI (JSON)` to export the spreadsheet data and formulas as a JSON file.
-    - The script will display a modal dialog with a clickable download link for the JSON file.
+    - The script will display an alert with a data URL that you can copy and paste into your browser to download the JSON file.
 
 ### Integration with Existing Apps Script
 If your Google Sheet already has Apps Script code:
@@ -52,16 +51,15 @@ If your Google Sheet already has Apps Script code:
     - Copy the contents of `exportForAI.gs` from this repository into your existing Apps Script project.
 
 2. **Create a Wrapper Function:**
-    - Create a wrapper function to handle the export and display a clickable download link:
+    - Create a wrapper function to handle the export and display the download URL:
     ```javascript
     function exportForAI() {
       const result = AIExport.exportSpreadsheetAsJson();
-      const html = HtmlService
-        .createHtmlOutput(`<p>Your export is ready: <a href="${result.dataUrl}" download="${result.filename}">Download JSON</a></p>`)
-        .setWidth(320)
-        .setHeight(80);
-      
-      SpreadsheetApp.getUi().showModalDialog(html, 'Export complete');
+      SpreadsheetApp.getUi().alert(
+        'Export Complete', 
+        `Download ready! File: ${result.filename} (${Math.round(result.size/1024)}KB)\n\nCopy this link to download:\n${result.dataUrl}`, 
+        SpreadsheetApp.getUi().ButtonSet.OK
+      );
     }
     ```
 
